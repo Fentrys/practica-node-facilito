@@ -1,0 +1,22 @@
+extends ./layout.pug
+block estilo
+    link(href="./static/css/estilo.css")
+block contenido
+    form(action="/users", method="POST")
+        div(class="form-group")
+            label(for="email") Email
+            input(type="text", class="form-control", name="email", placeholder="Email", id="email")
+        div(class="form-group")
+            label(for="password") Contraseña
+            input(type="password", name="password", placeholder="Contraseña", id="password", class="form-control")
+        div(class="form-group")
+            label(for="password_confirmation") Confirmar Contraseña
+            input(type="password", name="password_confirmation", placeholder="Confirmar Contrase", id="password_confirmation", class="form-control")
+        div(class="form-group")
+            label(for="username") Username
+            input(type="text", name="username", placeholder="Username", id="username", class="form-control")
+        div(class="form-group")
+            label(for="name") Name
+            input(type="text", name="name", placeholder="Nombre", id="name", class="form-control")
+        div(class="form-group")
+            input(type="submit" value="Iniciar sesión" class="btn btn-info")
