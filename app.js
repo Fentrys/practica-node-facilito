@@ -33,7 +33,6 @@ app.use(session({
 }));
 */
 
-
 app.use(cookieSession({
 	name: "session",
 	keys: ["llave-1", "llave-2"]

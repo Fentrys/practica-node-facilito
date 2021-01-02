@@ -1,3 +1,15 @@
-module.exports = function(req, res, next){
-	Image.findById(req.params.id)
+var Imagen = require("../models/imagenes");
+
+
+module.exports = function(req,res,next){	
+	console.log(Imagen);
+	Imagen.findById(req.params.id, function(err, imagen){
+		if(imagen != null){
+			console.log("Encontre la imagen"+imagen.title);
+			res.locals.imagen = imagen;			
+			next();
+		}else{
+			res.redirect("/app");
+		}
+	})
 }
