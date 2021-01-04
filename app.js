@@ -46,25 +46,42 @@ app.get("/", function(req,res){
     res.render("index", {titulo:"Pagina de layout"})
 });
 
-app.get("/login", function(req, res){
-    User.find(function(err, doc){
-        
-    })
-    res.render("login")
+app.get("/signup",function(req,res){
+	User.find(function(err,doc){
+		res.render("signup")
+	})
+})
+
+app.get("/login", function(req, res){    
+    res.render("login");
 });
 
 app.use("/app", router_app);
 
 app.post("/users", function(req, res){
-    var user = new User({email: req.body.email, password: req.body.password, 
-						password_confirmation: req.body.password_confirmation});
-    user.save(function(err){
-		if(err){
-			console.log(String(err));
-		}
-        res.render("users",{email:req.body.email, titulo: "Usuarios"});
-    });
-    
+    var user = new User({
+						email: req.body.email, 
+						password: req.body.password, 
+						password_confirmation: req.body.password_confirmation,
+						username: req.body.username
+					});
+    user.save().then(function(us){
+		res.send("Guardamos el usuario exitosamente");
+	},function(err){
+		console.log(String(err));
+		res.send("Hubo un error al guardar el usuario");
+	})    
 });
+
+app.post("/sesssions", function(req,res){
+	User.findOne({email:req.body.email,password:req.body.password}, function(err,user){
+		console.log(user);
+		console.log(err);
+		req.session.user_id = user._id;
+		res.redirect("/app");
+	})
+})
+
+app.use("/app", session_middleware);
 
 app.listen(3000);

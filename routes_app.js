@@ -61,7 +61,8 @@ router.route("/imagenes")
 		var extension = req.body.archivo.extension.split(".").pop();
 		var data = {
 			title: req.body.title,
-			creator: res.locals.user._id
+			creator: res.locals.user._id,
+			extension: extension
 		}
 	
 		var imagen = new Imagen(data);
