@@ -5,6 +5,8 @@ var router = express.Router();
 
 var image_finder_middleware = require("./middlewares/find_image");
 
+var fs = require("fs");
+
 router.get("/", (req, res) =>{
 	/*Buscar el usuario*/
 	res.render("app/home");
@@ -51,19 +53,22 @@ router.route("/imagenes/:id")
 router.route("/imagenes")
 	.get((req,res)=>{
 		console.log(Imagen);
-		Imagen.find({}, function(err, imagenes){
+		Imagen.find({creator: res.locals.user._id}, function(err, imagenes){
 			res.render("app/imagenes/index",{imagenes:imagenes,titulo:"Mis imagenes"});
 		});
 	})
 	.post((req,res)=>{
+		var extension = req.body.archivo.extension.split(".").pop();
 		var data = {
-			title: req.body.title
+			title: req.body.title,
+			creator: res.locals.user._id
 		}
 	
 		var imagen = new Imagen(data);
 	
 		imagen.save(function(err){
 			if(!err){
+				fs.rename(req.body.archivo.path,"public/imagenes"+imagen._id+"."+extension);
 				res.redirect("/app/imagenes/"+imagen._id)
 			}
 			else{

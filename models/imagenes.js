@@ -5,7 +5,8 @@ var Schema = mongoose.Schema;
 mongoose.connect("mongodb://localhost/fotos");
 
 var img_schema = Schema({
-	title: {type: String, require: true}
+	title: {type: String, require: true},
+	creator: {type: Schema.Types.ObjectId, ref: "User"}
 });
 
 var Imagen =  mongoose.model("Imagen", img_schema);

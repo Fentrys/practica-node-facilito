@@ -6,6 +6,8 @@ var cookieSession = require("cookie-session");
 var router_app = require("./routes_app");
 var session_middleware = require("./middlewares/session")
 var methodOverride = require("method-override");
+var formidable = require("express-formidable");
+
 
 var pug =  require("pug");
 
@@ -37,6 +39,8 @@ app.use(cookieSession({
 	name: "session",
 	keys: ["llave-1", "llave-2"]
 }));
+
+app.use(formidable({keepExtensions: true, uploadDir:"images"}));
 
 app.get("/", function(req,res){
     res.render("index", {titulo:"Pagina de layout"})
