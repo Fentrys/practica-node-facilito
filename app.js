@@ -9,9 +9,23 @@ var methodOverride = require("method-override");
 var formidable = require("express-formidable");
 var pug =  require("pug");
 var RedisStore = require("connect-redis")(session);
+var http = require("http");
+var realtime = require("./realtime");
+var redis = require("redis");
+var redisClint = redis.createClient();
 
 
 var app = express();
+var server = http.Server(app);
+
+var sessionMiddleware = session({
+	store: new RedisStore({client:redisClint}),
+	secret:"super ultra secret word",
+	resave: false,
+	saveUninitialized: true
+});
+
+realtime(server,sessionMiddleware)
 
 app.set("view engine","pug");
 
@@ -41,11 +55,6 @@ app.use(cookieSession({
 	keys: ["llave-1", "llave-2"]
 }));
 */
-
-var sessionMiddleware = session({
-	store: new RedisStore({}),
-	secret:"super ultra secret word"
-});
 
 app.use(sessionMiddleware);
 
@@ -93,4 +102,4 @@ app.post("/sesssions", function(req,res){
 
 app.use("/app", session_middleware);
 
-app.listen(3000);
+server.listen(3000);
