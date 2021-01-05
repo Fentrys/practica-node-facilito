@@ -32,7 +32,7 @@
 	margin: 0 auto;
 }
 
-.img-container h1{
+.img-container h1,.img-container h2{
 	padding: 15px;
 	border-bottom: 1px solid #222;
 }

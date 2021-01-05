@@ -1,15 +1,15 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var User = require("./models/user").User;
-/*var session = require("express-session");*/
+var session = require("express-session");
 var cookieSession = require("cookie-session");
 var router_app = require("./routes_app");
 var session_middleware = require("./middlewares/session")
 var methodOverride = require("method-override");
 var formidable = require("express-formidable");
-
-
 var pug =  require("pug");
+var RedisStore = require("connect-redis")(session);
+
 
 var app = express();
 
@@ -34,11 +34,20 @@ app.use(session({
 	saveUninitialized:false
 }));
 */
-
+/*
+Utilizando cookies para la seccion
 app.use(cookieSession({
 	name: "session",
 	keys: ["llave-1", "llave-2"]
 }));
+*/
+
+var sessionMiddleware = session({
+	store: new RedisStore({}),
+	secret:"super ultra secret word"
+});
+
+app.use(sessionMiddleware);
 
 app.use(formidable({keepExtensions: true, uploadDir:"images"}));
 
